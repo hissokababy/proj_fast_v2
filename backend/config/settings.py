@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'rest_framework',
+    'drf_spectacular',
     'website',
 ]
 
@@ -138,6 +139,16 @@ MAILERS = {
     },
 }
 
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'FAST and EASY API',
+    'DESCRIPTION': 'API сайта языкового центра FAST and EASY',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+}
 
 AWS_ACCESS_KEY_ID = os.getenv("MINIO_ROOT_USER")
 AWS_SECRET_ACCESS_KEY = os.getenv("MINIO_ROOT_PASSWORD")
