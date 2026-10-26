@@ -4,7 +4,7 @@ from django.db import models
 
 class Teacher(models.Model):
     name = models.CharField(max_length=100, verbose_name="Имя")
-    photo = models.URLField(verbose_name="Фото")
+    photo = models.ImageField(upload_to="teachers/", verbose_name="Фото")
     description = models.TextField(blank=True, verbose_name="Описание")
     order = models.PositiveIntegerField(default=0, verbose_name="Порядок")
 
@@ -19,7 +19,7 @@ class Teacher(models.Model):
 
 class Certificate(models.Model):
     title = models.CharField(max_length=150, verbose_name="Название")
-    image = models.URLField(verbose_name="Фото сертификата")
+    image = models.ImageField(upload_to="certificates/", verbose_name="Фото сертификата")
     order = models.PositiveIntegerField(default=0, verbose_name="Порядок")
 
     class Meta:
@@ -33,7 +33,7 @@ class Certificate(models.Model):
 
 class Event(models.Model):
     title = models.CharField(max_length=150, verbose_name="Название")
-    image = models.URLField(verbose_name="Фото мероприятия")
+    image = models.ImageField(upload_to="events/", verbose_name="Фото мероприятия")
     description = models.TextField(blank=True, verbose_name="Описание")
     order = models.PositiveIntegerField(default=0, verbose_name="Порядок")
 
@@ -48,7 +48,7 @@ class Event(models.Model):
 
 class InteriorPhoto(models.Model):
     title = models.CharField(max_length=150, verbose_name="Название")
-    image = models.URLField(verbose_name="Фото интерьера")
+    image = models.ImageField(upload_to="interiors/", verbose_name="Фото интерьера")
     order = models.PositiveIntegerField(default=0, verbose_name="Порядок")
 
     class Meta:
