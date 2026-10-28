@@ -8,6 +8,5 @@ from website.services.teacher_service import get_all_teachers
 class TeacherListAPIView(generics.ListAPIView):
     serializer_class = TeacherSerializer
 
-    def get_queryset(self) -> QuerySet[Teacher, Teacher]:
+    def get_queryset(self) -> QuerySet[Teacher]:
         return get_all_teachers()
-    

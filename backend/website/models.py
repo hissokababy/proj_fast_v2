@@ -18,7 +18,7 @@ class Teacher(models.Model):
 
 
 class Certificate(models.Model):
-    title = models.CharField(max_length=150, verbose_name="Название")
+    title = models.CharField(max_length=150, verbose_name="Название", blank=True, null=True)
     image = models.ImageField(upload_to="certificates/", verbose_name="Фото сертификата")
     order = models.PositiveIntegerField(default=0, verbose_name="Порядок")
 
@@ -32,7 +32,7 @@ class Certificate(models.Model):
 
 
 class Event(models.Model):
-    title = models.CharField(max_length=150, verbose_name="Название")
+    title = models.CharField(max_length=150, verbose_name="Название", blank=True, null=True)
     image = models.ImageField(upload_to="events/", verbose_name="Фото мероприятия")
     description = models.TextField(blank=True, verbose_name="Описание")
     order = models.PositiveIntegerField(default=0, verbose_name="Порядок")
@@ -47,7 +47,7 @@ class Event(models.Model):
 
 
 class InteriorPhoto(models.Model):
-    title = models.CharField(max_length=150, verbose_name="Название")
+    title = models.CharField(max_length=150, verbose_name="Название", blank=True, null=True)
     image = models.ImageField(upload_to="interiors/", verbose_name="Фото интерьера")
     order = models.PositiveIntegerField(default=0, verbose_name="Порядок")
 
