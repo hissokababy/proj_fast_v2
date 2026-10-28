@@ -11,26 +11,3 @@ class InteriorPhotoListAPIView(generics.ListAPIView):
         return get_all_interiors()
 
 
-class InteriorPhotoCreateAPIView(generics.CreateAPIView):
-    serializer_class = InteriorPhotoSerializer
-
-
-class InteriorPhotoDetailAPIView(generics.RetrieveAPIView):
-    serializer_class = InteriorPhotoSerializer
-
-    def get_queryset(self):
-        return get_all_interiors()
-
-
-class InteriorPhotoUpdateAPIView(generics.UpdateAPIView):
-    serializer_class = InteriorPhotoSerializer
-
-    def get_queryset(self):
-        return get_all_interiors()
-
-
-class InteriorPhotoDeleteAPIView(generics.DestroyAPIView):
-    serializer_class = InteriorPhotoSerializer
-
-    def get_queryset(self):
-        return get_all_interiors()
