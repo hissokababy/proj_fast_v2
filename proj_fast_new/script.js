@@ -6,6 +6,16 @@ import { fetchAndRenderTeachers, fetchAndRenderCertificates } from './js/api.js'
 import { CourseCard } from './js/components/CourseCard.js';
 import { coursesData } from './js/data/coursesData.js';
 
+import { StepCard } from './js/components/StepCard.js';
+import { stepsData } from './js/data/stepsData.js';
+
+function renderSteps() {
+  const container = document.getElementById('stepsGrid');
+  if (!container) return;
+  container.innerHTML = '';
+  stepsData.forEach(step => container.appendChild(StepCard(step)));
+}
+
 // Функция для отрисовки курсов
 function renderCourses() {
   const grid = document.getElementById('coursesGrid');
@@ -30,4 +40,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // 4. Подтягиваем данные с бэкенда Django
   fetchAndRenderTeachers();
   fetchAndRenderCertificates();
+
+  renderSteps()
 });

@@ -27,9 +27,6 @@ class Certificate(models.Model):
         verbose_name = "Сертификат"
         verbose_name_plural = "Сертификаты"
 
-    def __str__(self):
-        return self.title
-
 
 class Event(models.Model):
     title = models.CharField(max_length=150, verbose_name="Название", blank=True, null=True)
@@ -42,9 +39,6 @@ class Event(models.Model):
         verbose_name = "Мероприятие"
         verbose_name_plural = "Мероприятия"
 
-    def __str__(self):
-        return self.title
-
 
 class InteriorPhoto(models.Model):
     title = models.CharField(max_length=150, verbose_name="Название", blank=True, null=True)
@@ -56,8 +50,6 @@ class InteriorPhoto(models.Model):
         verbose_name = "Фото интерьера"
         verbose_name_plural = "Фото интерьера"
 
-    def __str__(self):
-        return self.title
 
 
 class Application(models.Model):
