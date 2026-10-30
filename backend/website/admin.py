@@ -1,6 +1,6 @@
 
 from django.contrib import admin
-from .models import Teacher, Certificate, Event, InteriorPhoto, Application
+from .models import OtherPhoto, Teacher, Certificate, Event, InteriorPhoto, Application
 
 
 @admin.register(Teacher)
@@ -43,3 +43,9 @@ class ApplicationAdmin(admin.ModelAdmin):
     list_filter = ("created_at",)
     ordering = ("-created_at",)
 
+
+@admin.register(OtherPhoto)
+class OtherPhotoAdmin(admin.ModelAdmin):
+    list_display = ("title", "image")
+    search_fields = ("title", "key")
+    prepopulated_fields = {"key": ("title",)}

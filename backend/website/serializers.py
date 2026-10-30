@@ -1,7 +1,7 @@
 
 from rest_framework import serializers
 
-from website.models import Application, Certificate, Event, InteriorPhoto, Teacher
+from website.models import Application, Certificate, Event, InteriorPhoto, Teacher, OtherPhoto
 
 
 class TeacherSerializer(serializers.ModelSerializer):
@@ -39,3 +39,9 @@ class ApplicationSerializer(serializers.ModelSerializer):
         model = Application
         fields = ["id", "full_name", "phone", "created_at"]
         read_only_fields = ["id", "created_at"]
+
+
+class OtherPhotoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OtherPhoto
+        fields = ["title", "key", "image"]

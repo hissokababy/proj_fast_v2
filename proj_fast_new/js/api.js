@@ -62,3 +62,46 @@ export async function fetchAndRenderCertificates() {
         track.innerHTML = '<p>Не удалось загрузить данные</p>';
     }
 }
+
+import { EventCard } from './components/EventCard.js';
+
+export async function fetchAndRenderEvents() {
+  const rail = document.getElementById('eventsRail');
+  if (!rail) return;
+
+  try {
+    const response = await fetch('http://127.0.0.1:8000/api/events/'); // Проверь правильность URL
+    if (!response.ok) throw new Error('Ошибка при загрузке событий');
+
+    const events = await response.json();
+
+    rail.innerHTML = '';
+    events.forEach(event => {
+      rail.appendChild(EventCard(event));
+    });
+  } catch (error) {
+    console.error('Ошибка загрузки событий с бэкенда:', error);
+  }
+}
+
+// js/api.js
+
+export async function fetchAndRenderPhotoByKey(key, imgElementSelector) {
+  const imgElement = document.querySelector(imgElementSelector);
+  if (!imgElement) return;
+
+  try {
+    // Делаем запрос к Django по нужному ключу (slug)
+    const response = await fetch(`http://127.0.0.1:8000/api/other-photos/${key}/`);
+    if (!response.ok) throw new Error(`Не удалось загрузить фото с ключом: ${key}`);
+    
+    const data = await response.json();
+    
+    // Ожидаем, что бэкенд возвращает объект с полем image (или url)
+    if (data.image) {
+      imgElement.src = data.image;
+    }
+  } catch (error) {
+    console.error(`Ошибка загрузки фото (${key}):`, error);
+  }
+}

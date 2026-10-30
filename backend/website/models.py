@@ -51,7 +51,6 @@ class InteriorPhoto(models.Model):
         verbose_name_plural = "Фото интерьера"
 
 
-
 class Application(models.Model):
     full_name = models.CharField(
         max_length=150,
@@ -73,3 +72,17 @@ class Application(models.Model):
 
     def __str__(self):
         return f"{self.full_name} — {self.phone}"
+
+
+class OtherPhoto(models.Model):
+    title = models.CharField(max_length=150, verbose_name="Название (НЕ ИЗМЕНЯТЬ!!!)")
+    key = models.SlugField(max_length=100, unique=True, verbose_name="Ключ (НЕ ИЗМЕНЯТЬ!!!)")
+    image = models.FileField(upload_to="other/", verbose_name="Изображение")
+
+    class Meta:
+        verbose_name = "Другое фото"
+        verbose_name_plural = "Другие фото"
+
+    def __str__(self) -> str:
+        return f"{self.title} ({self.key})"
+
