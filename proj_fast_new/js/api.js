@@ -1,3 +1,5 @@
+import { EventCard } from './components/EventCard.js';
+
 export async function fetchAndRenderTeachers() {
     const track = document.getElementById('teachersCarousel');
     if (!track) return;
@@ -63,8 +65,6 @@ export async function fetchAndRenderCertificates() {
     }
 }
 
-import { EventCard } from './components/EventCard.js';
-
 export async function fetchAndRenderEvents() {
   const rail = document.getElementById('eventsRail');
   if (!rail) return;
@@ -84,24 +84,58 @@ export async function fetchAndRenderEvents() {
   }
 }
 
-// js/api.js
-
+// Функция для подгрузки картинок с бэка по ключу (slug)
 export async function fetchAndRenderPhotoByKey(key, imgElementSelector) {
   const imgElement = document.querySelector(imgElementSelector);
   if (!imgElement) return;
 
   try {
-    // Делаем запрос к Django по нужному ключу (slug)
     const response = await fetch(`http://127.0.0.1:8000/api/other-photos/${key}/`);
-    if (!response.ok) throw new Error(`Не удалось загрузить фото с ключом: ${key}`);
+    if (!response.ok) throw new Error(`Не удалось загрузить фото для ключа: ${key}`);
     
     const data = await response.json();
     
-    // Ожидаем, что бэкенд возвращает объект с полем image (или url)
+    // Проверяем поле, в котором бэкенд возвращает ссылку на картинку (обычно image или url)
     if (data.image) {
       imgElement.src = data.image;
     }
   } catch (error) {
-    console.error(`Ошибка загрузки фото (${key}):`, error);
+    console.error(`Ошибка при загрузке фото (${key}):`, error);
+  }
+}
+
+export async function fetchAndRenderCenterCarousel() {
+  // Ищем правильный контейнер по id="centerCarousel" или классу .centerCarouselTrack
+  const carouselContainer = document.getElementById('centerCarousel') || document.querySelector('.centerCarouselTrack');
+  if (!carouselContainer) return;
+
+  try {
+    const response = await fetch('http://127.0.0.1:8000/api/interiors/');
+    if (!response.ok) throw new Error('Ошибка загрузки фото интерьера');
+
+    const interiors = await response.json();
+    
+    // Сортируем по полю order
+    interiors.sort((a, b) => (a.order || 0) - (b.order || 0));
+
+    carouselContainer.innerHTML = '';
+
+    interiors.forEach(item => {
+      // Корректируем путь к картинке, если бэкенд отдает относительный путь (например, /media/...)
+      const imageUrl = item.image.startsWith('http') 
+        ? item.image 
+        : `http://127.0.0.1:8000${item.image}`;
+
+      // Создаем сразу тег img, как того требуют твои CSS стили для .centerCarouselTrack img
+      const img = document.createElement('img');
+      img.src = imageUrl;
+      img.alt = item.title || 'Интерьер центра';
+      img.loading = 'lazy';
+
+      carouselContainer.appendChild(img);
+    });
+
+  } catch (error) {
+    console.error('Не удалось загрузить фото интерьера:', error);
   }
 }

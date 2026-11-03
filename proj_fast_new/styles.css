@@ -2471,30 +2471,34 @@ body {
     display: flex;
     align-items: center
 }
-
+/* Фиксируем размеры и делаем горизонтальный ряд */
 .centerCarouselTrack {
-    position: absolute;
-    inset: 0;
-    z-index: -2;
+    position: relative; /* Убираем absolute, чтобы карусель заняла свое место в потоке */
     display: flex;
+    gap: 20px;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
-    scrollbar-width: none
+    scrollbar-width: none;
+    width: 100%;
+    max-width: 1200px; /* Ограничиваем общую ширину */
+    margin: 0 auto;
+    padding: 20px 0;
 }
 
 .centerCarouselTrack::-webkit-scrollbar {
-    display: none
+    display: none;
 }
-
-.centerCarouselTrack img {
+/* Каждая картинка внутри трека растягивается на весь экран */
+.centerCarouselTrack img,
+#centerCarousel img {
     flex: 0 0 100%;
     width: 100%;
     height: 100%;
     min-height: 690px;
     object-fit: cover;
     scroll-snap-align: start;
-    animation: galleryFade .5s ease
+    animation: galleryFade .5s ease;
 }
 
 .centerGalleryShade {
@@ -3017,8 +3021,18 @@ html {
     margin-top: 5px
 }
 
+/* Выравнивание и центрирование карточек тарифов */
 .pricingGrid {
-    align-items: stretch
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.pricingGrid .pricingCard {
+  flex: 1 1 320px;
+  max-width: 400px;
 }
 
 .pricingCard {
@@ -3207,4 +3221,218 @@ html {
     height: 100% !important;
     min-width: 100% !important;
     object-fit: cover !important;
+}
+
+/* Контейнер для соцсетей в блоке Steps */
+.stepsSocialWrapper {
+  text-align: center;
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 1px dashed var(--line, #e7eaf4);
+}
+
+.stepsSocialWrapper p {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--muted, #65708a);
+  margin-bottom: 18px;
+  letter-spacing: 0.5px;
+}
+
+/* Флекс-сетка для размещения иконок по центру */
+.socialLinks {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* Крупные стильные кнопки-иконки */
+.socialLinks a {
+  width: 54px;
+  height: 54px;
+  border-radius: 16px;
+  background: #ffffff;
+  border: 1px solid #dce4f7;
+  color: var(--blue, #2457f5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 900;
+  box-shadow: 0 8px 24px rgba(16, 29, 78, 0.06);
+  transition: transform 0.25s cubic-bezier(0.2, 0.75, 0.25, 1), 
+              background-color 0.25s ease, 
+              border-color 0.25s ease, 
+              box-shadow 0.25s ease;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+/* Эффект при наведении (hover) */
+.socialLinks a:hover {
+  background: var(--blue, #2457f5);
+  border-color: var(--blue, #2457f5);
+  color: #ffffff;
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 14px 30px rgba(36, 87, 245, 0.3);
+}
+
+/* Эффект при нажатии */
+.socialLinks a:active {
+  transform: translateY(-2px) scale(0.98);
+}
+
+/* Адаптив под мобильные устройства */
+@media (max-width: 520px) {
+  .socialLinks {
+    gap: 12px;
+  }
+  
+  .socialLinks a {
+    width: 48px;
+    height: 48px;
+    font-size: 20px;
+    border-radius: 14px;
+  }
+}
+
+/* Контейнер соцсетей в блоке шагов */
+.stepsSocialWrapper {
+  text-align: center;
+  margin-top: 50px;
+  padding-top: 28px;
+  border-top: 1px dashed var(--line, #e7eaf4);
+}
+
+.stepsSocialWrapper p {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--muted, #65708a);
+  margin-bottom: 18px;
+  letter-spacing: 0.5px;
+}
+
+/* Сетка иконок */
+.socialLinks.contactSocials {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* Базовый стиль кнопок */
+.socialLinks.contactSocials a {
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  background: #ffffff;
+  border: 1px solid #dce4f7;
+  color: var(--blue, #2457f5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  font-weight: 800;
+  box-shadow: 0 8px 24px rgba(16, 29, 78, 0.05);
+  transition: all 0.25s cubic-bezier(0.2, 0.75, 0.25, 1);
+  text-decoration: none;
+}
+
+/* Контейнер соцсетей в блоке шагов */
+.stepsSocialWrapper {
+  text-align: center;
+  margin-top: 55px;
+  padding-top: 32px;
+  border-top: 1px dashed var(--line, #e7eaf4);
+}
+
+.stepsSocialWrapper p {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--muted, #65708a);
+  margin-bottom: 20px;
+  letter-spacing: 0.5px;
+}
+
+/* Сетка иконок */
+.socialLinks.contactSocials {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px; /* Увеличили расстояние между ними */
+  flex-wrap: wrap;
+}
+
+/* СДЕЛАЛИ КРУПНЫЕ КНОПКИ */
+.socialLinks.contactSocials a {
+  width: 68px;   /* Размер квадрата пошире */
+  height: 68px;  /* Размер квадрата повысоте */
+  border-radius: 20px; /* Более скругленные углы */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: transform 0.25s cubic-bezier(0.2, 0.75, 0.25, 1), box-shadow 0.25s ease;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* УВЕЛИЧИЛИ САМИ SVG-ИКНОКИ ВНУТРИ */
+.socialLinks.contactSocials a svg {
+  width: 32px;   /* Было 22px — теперь заметно крупнее */
+  height: 32px;  /* Было 22px */
+  stroke-width: 2.2px; /* Чуть пожирнее линии для четкости */
+}
+
+/* Эффект при наведении */
+.socialLinks.contactSocials a:hover {
+  transform: translateY(-6px) scale(1.08);
+}
+
+/* --- ФИРМЕННЫЕ ЦВЕТА И ТЕНИ --- */
+
+/* Instagram */
+.socialLinks.contactSocials a[aria-label="Instagram"] {
+  background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+  color: #ffffff;
+  box-shadow: 0 10px 25px rgba(214, 36, 159, 0.3);
+}
+
+/* Telegram */
+.socialLinks.contactSocials a[aria-label="Telegram"] {
+  background: #229ED9;
+  color: #ffffff;
+  box-shadow: 0 10px 25px rgba(34, 158, 217, 0.3);
+}
+
+/* Facebook */
+.socialLinks.contactSocials a[aria-label="Facebook"] {
+  background: #1877F2;
+  color: #ffffff;
+  box-shadow: 0 10px 25px rgba(24, 119, 242, 0.3);
+}
+
+/* YouTube */
+.socialLinks.contactSocials a[aria-label="YouTube"] {
+  background: #FF0000;
+  color: #ffffff;
+  box-shadow: 0 10px 25px rgba(255, 0, 0, 0.3);
+}
+
+/* Адаптив для мобильных телефонов */
+@media (max-width: 520px) {
+  .socialLinks.contactSocials {
+    gap: 14px;
+  }
+  .socialLinks.contactSocials a {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+  }
+  .socialLinks.contactSocials a svg {
+    width: 26px;
+    height: 26px;
+  }
 }

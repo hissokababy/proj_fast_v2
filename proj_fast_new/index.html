@@ -49,15 +49,8 @@
   </header>
   <section aria-label="Фотографии учебного центра" class="centerGallery"
     data-i18n-attr="aria-label:accessibility.attribute_004_aria-label" id="home">
-    <div class="centerCarouselTrack" id="centerCarousel"><img alt="Просторное учебное пространство"
-        data-i18n-attr="alt:accessibility.attribute_005_alt"
-        src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&amp;fit=crop&amp;w=2000&amp;q=90" /><img
-        alt="Студенты вместе занимаются" data-i18n-attr="alt:accessibility.attribute_006_alt"
-        src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&amp;fit=crop&amp;w=2000&amp;q=90" /><img
-        alt="Обучение в группе" data-i18n-attr="alt:accessibility.attribute_007_alt"
-        src="https://images.unsplash.com/photo-1529390079861-591de354faf5?auto=format&amp;fit=crop&amp;w=2000&amp;q=90" /><img
-        alt="Класс для занятий" data-i18n-attr="alt:accessibility.attribute_008_alt"
-        src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&amp;fit=crop&amp;w=2000&amp;q=90" />
+    <div class="carousel-container" id="centerCarousel">
+      <!-- Сюда JS автоматически подставит слайды с бэка -->
     </div>
   </section>
   <section class="stats">
@@ -166,43 +159,53 @@
         <h2><span data-i18n="steps.text_002"></span></h2>
         <p><span data-i18n="steps.text_003"></span></p>
       </div>
+      
+      <!-- Сетка шагов (заполняется через JS) -->
       <div class="steps" id="stepsGrid">
       </div>
-    </div>
-  </section>
-  <section class="section pale" id="pricing">
-    <div class="container">
-      <div class="sectionHead">
-        <div class="kicker"><span data-i18n="pricing.text_001"></span></div>
-        <h2><span data-i18n="pricing.text_002"></span></h2>
-        <p><span data-i18n="pricing.text_003"></span></p>
-      </div>
-      <div class="courseGrid pricingGrid">
-        <article class="course pricingCard">
-          <div class="courseIcon">👥</div>
-          <h3><span data-i18n="pricing.text_004"></span></h3>
-          <p class="price"><span data-i18n="pricing.text_005"></span></p>
-          <ul>
-            <li><span data-i18n="pricing.text_006"></span></li>
-            <li><span data-i18n="pricing.text_007"></span></li>
-            <li><span data-i18n="pricing.text_008"></span></li>
-            <li><span data-i18n="pricing.text_009"></span></li>
-          </ul><a class="btn" data-course="Групповые занятия" href="#contacts"><span
-              data-i18n="pricing.text_010"></span></a>
-        </article>
-        <article class="course pricingCard featuredPrice">
-          <div class="courseIcon">🎯</div>
-          <h3><span data-i18n="pricing.text_011"></span></h3>
-          <p class="price"><span data-i18n="pricing.text_012"></span></p>
-          <ul>
-            <li><span data-i18n="pricing.text_013"></span></li>
-            <li><span data-i18n="pricing.text_014"></span></li>
-            <li><span data-i18n="pricing.text_015"></span></li>
-            <li><span data-i18n="pricing.text_016"></span></li>
-          </ul><a class="btn" data-course="Индивидуальные занятия" href="#contacts"><span
-              data-i18n="pricing.text_017"></span></a>
-        </article>
-      </div>
+
+<!-- Реальные SVG-иконки соцсетей -->
+      <div class="stepsSocialWrapper" style="text-align: center; margin-top: 45px;">
+        <p style="font-size: 13px; color: var(--muted); margin-bottom: 16px; font-weight: 700;">
+          <span data-i18n="social.title">Мы в социальных сетях:</span>
+        </p>
+        <div aria-label="Социальные сети" class="socialLinks contactSocials"
+          data-i18n-attr="aria-label:accessibility.attribute_028_aria-label">
+          
+          <!-- Instagram -->
+          <a aria-label="Instagram" href="https://instagram.com/" rel="noopener" target="_blank">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+            </svg>
+          </a>
+
+          <!-- Telegram -->
+          <a aria-label="Telegram" href="https://t.me/" rel="noopener" target="_blank">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="22" y1="2" x2="11" y2="13"></line>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+          </a>
+
+          <!-- Facebook -->
+          <a aria-label="Facebook" href="https://facebook.com/" rel="noopener" target="_blank">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+            </svg>
+          </a>
+
+          <!-- YouTube -->
+          <a aria-label="YouTube" href="https://youtube.com/" rel="noopener" target="_blank">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"></path>
+              <polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="currentColor"></polygon>
+            </svg>
+          </a>
+
+        </div>
+      </div>  
     </div>
   </section>
   <section class="section" id="events">
@@ -275,12 +278,6 @@
         </div>
         <div class="footerContact"><a class="phoneLink" href="tel:+998000000000">☎ <span><span
                 data-i18n="general.text_034"></span></span></a>
-          <div aria-label="Социальные сети" class="socialLinks"
-            data-i18n-attr="aria-label:accessibility.attribute_036_aria-label"><a aria-label="Instagram"
-              href="https://instagram.com/" rel="noopener" target="_blank">◎</a><a aria-label="Telegram"
-              href="https://t.me/" rel="noopener" target="_blank">➤</a><a aria-label="Facebook"
-              href="https://facebook.com/" rel="noopener" target="_blank">f</a><a aria-label="YouTube"
-              href="https://youtube.com/" rel="noopener" target="_blank">▶</a></div>
         </div>
       </div>
       <div class="copyright"><span><span data-i18n="general.text_035"></span></span><span><span

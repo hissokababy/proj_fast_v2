@@ -49,3 +49,4 @@ class OtherPhotoAdmin(admin.ModelAdmin):
     list_display = ("title", "image")
     search_fields = ("title", "key")
     prepopulated_fields = {"key": ("title",)}
+

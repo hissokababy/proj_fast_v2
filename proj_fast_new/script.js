@@ -1,11 +1,11 @@
-// script.js
 import { initApp } from './js/i18n.js';
 import { initLeadForm } from './js/lead.js';
 import { 
   fetchAndRenderTeachers, 
   fetchAndRenderCertificates, 
   fetchAndRenderEvents,
-  fetchAndRenderPhotoByKey // Импортируем функцию для картинок по ключу
+  fetchAndRenderPhotoByKey, // 1. Импортируем функцию
+  fetchAndRenderCenterCarousel // <--- Импортируем функцию карусели
 } from './js/api.js';
 
 import { CourseCard } from './js/components/CourseCard.js';
@@ -33,17 +33,18 @@ document.addEventListener('DOMContentLoaded', () => {
   renderCourses();
   renderSteps();
 
-  // 2. Инициализируем интерфейс, переводы и форму
+  // 2. Инициализируем интерфейс и форму
   initApp();
   initLeadForm();
-  
-  // 3. Подтягиваем динамические данные из Django API
+
+  // 3. Загружаем динамические данные с бэкенда
   fetchAndRenderTeachers();
   fetchAndRenderCertificates();
   fetchAndRenderEvents();
+  fetchAndRenderCenterCarousel(); // <--- Запускаем загрузку карусели
 
-  // 4. Подтягиваем логотип и фото для блока "О нас" с бэка по их ключам (slug)
-  // Замени 'main-logo' и 'why-photo' на те слова, которые у тебя записаны в базе данных в поле slug
-  fetchAndRenderPhotoByKey('main-logo', '.brand img');
+  // 4. Подтягиваем логотип и фото "О нас" по их ключам (slug) из админки Django
+  // Замени 'logo' и 'why-photo' на те значения slug, которые ты прописал на бэкенде
+  fetchAndRenderPhotoByKey('logo', '.brand img');
   fetchAndRenderPhotoByKey('why-photo', '.whyPhoto img');
-}); 
+});
