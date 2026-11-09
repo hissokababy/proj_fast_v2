@@ -1,8 +1,7 @@
-
 from django.db.models import QuerySet
 
-from website.models import Certificate, Teacher
+from website.models import Certificate
 
 
-def get_all_certificates() -> QuerySet[Teacher]:
+def get_all_certificates() -> QuerySet[Certificate]:
     return Certificate.objects.all()

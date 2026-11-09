@@ -1,7 +1,7 @@
 from django.db.models import QuerySet
 
-from website.models import Event, Teacher
+from website.models import Event
 
 
-def get_all_events() -> QuerySet[Teacher]:
+def get_all_events() -> QuerySet[Event]:
     return Event.objects.all()
