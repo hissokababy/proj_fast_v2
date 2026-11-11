@@ -4,4 +4,4 @@ from website.models import InteriorPhoto
 
 
 def get_all_interiors() -> QuerySet[InteriorPhoto]:
-    return InteriorPhoto.objects.all()
+    return InteriorPhoto.objects.filter(is_active=True)
