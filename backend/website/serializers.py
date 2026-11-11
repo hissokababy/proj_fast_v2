@@ -104,7 +104,14 @@ class CourseSerializer(LanguageSerializerMixin, serializers.ModelSerializer):
         return self.get_translated_value(obj, "description")
 
 
+
 class ApplicationSerializer(serializers.ModelSerializer):
+    website = serializers.CharField(
+        required=False,
+        allow_blank=True,
+        write_only=True,
+    )
+
     class Meta:
         model = Application
         fields = [
@@ -120,8 +127,43 @@ class ApplicationSerializer(serializers.ModelSerializer):
             "referrer",
             "language",
             "created_at",
+            "website",
         ]
         read_only_fields = ["id", "created_at"]
+
+    def validate_full_name(self, value):
+        value = value.strip()
+        if len(value) < 2:
+            raise serializers.ValidationError(
+                "Укажите корректное имя."
+            )
+        return value
+
+    def validate_phone(self, value):
+        import re
+
+        value = value.strip()
+        digits = re.sub(r"\D", "", value)
+
+        if not 9 <= len(digits) <= 15:
+            raise serializers.ValidationError(
+                "Укажите корректный номер телефона."
+            )
+
+        if re.fullmatch(r"[+\d\s()\-]+", value) is None:
+            raise serializers.ValidationError(
+                "Номер телефона содержит недопустимые символы."
+            )
+
+        return value
+
+    def validate_website(self, value):
+        if value.strip():
+            raise serializers.ValidationError(
+                "Некорректная заявка."
+            )
+        return value
+
 
 
 class OtherPhotoSerializer(serializers.ModelSerializer):
