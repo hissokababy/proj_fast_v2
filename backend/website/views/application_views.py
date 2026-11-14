@@ -4,8 +4,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.throttling import ScopedRateThrottle
 
 from website.serializers import ApplicationSerializer
-from website.services.telegram_service import send_application_notification
-
+from tg_bot.services.telegram import send_application_notification
 
 class ApplicationCreateAPIView(generics.CreateAPIView):
     serializer_class = ApplicationSerializer

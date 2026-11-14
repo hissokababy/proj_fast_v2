@@ -2,7 +2,8 @@
 import logging
 import os
 
-import requests
+from telebot import TeleBot
+from telebot.apihelper import ApiException
 from django.utils import timezone
 
 logger = logging.getLogger(__name__)
@@ -30,25 +31,21 @@ def send_application_notification(application):
         f"Страница: {application.landing_page or '-'}"
     )
 
-    url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
-
     try:
-        response = requests.post(
-            url,
-            json={"chat_id": chat_id, "text": message},
+        bot = TeleBot(bot_token)
+
+        bot.send_message(
+            chat_id=chat_id,
+            text=message,
             timeout=5,
         )
-        response.raise_for_status()
-
-        if not response.json().get("ok"):
-            return False
 
         application.telegram_notified_at = timezone.now()
         application.save(update_fields=["telegram_notified_at"])
 
         return True
 
-    except (requests.RequestException, ValueError):
+    except (ApiException, ValueError):
         logger.exception(
             "Failed to send Telegram notification for application %s",
             application.pk,
