@@ -71,41 +71,31 @@ class ApplicationAdmin(admin.ModelAdmin):
         "phone",
         "status",
         "language",
+        "telegram_notified_at",
         "created_at",
     )
-    search_fields = ("full_name", "phone", "utm_source", "utm_campaign")
-    list_filter = ("status", "language", "created_at")
+
+    list_filter = (
+        "status",
+        "language",
+        "telegram_notified_at",
+        "created_at",
+    )
+
+    search_fields = (
+        "full_name",
+        "phone",
+        "utm_source",
+        "utm_campaign",
+    )
+
     readonly_fields = (
         "created_at",
         "updated_at",
         "telegram_notified_at",
     )
+
     ordering = ("-created_at",)
-
-    fieldsets = (
-        ("Данные клиента", {
-            "fields": ("full_name", "phone", "status", "language"),
-        }),
-        ("Рекламные данные", {
-            "fields": (
-                "utm_source",
-                "utm_medium",
-                "utm_campaign",
-                "utm_term",
-                "utm_content",
-                "landing_page",
-                "referrer",
-            ),
-        }),
-        ("Уведомления и даты", {
-            "fields": (
-                "telegram_notified_at",
-                "created_at",
-                "updated_at",
-            ),
-        }),
-    )
-
 
 @admin.register(OtherPhoto)
 class OtherPhotoAdmin(admin.ModelAdmin):

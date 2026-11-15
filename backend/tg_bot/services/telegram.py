@@ -4,7 +4,6 @@ import os
 
 from django.utils import timezone
 from telebot import TeleBot
-from telebot.apihelper import ApiException
 
 logger = logging.getLogger(__name__)
 
@@ -34,15 +33,21 @@ def send_application_notification(application):
     try:
         bot = TeleBot(bot_token)
         bot.send_message(chat_id=chat_id, text=message)
-
-        application.telegram_notified_at = timezone.now()
-        application.save(update_fields=["telegram_notified_at"])
-
-        return True
-
     except Exception:
         logger.exception(
             "Failed to send Telegram notification for application %s",
             application.pk,
         )
         return False
+
+    try:
+        application.telegram_notified_at = timezone.now()
+        application.save(update_fields=["telegram_notified_at"])
+    except Exception:
+        logger.exception(
+            "Telegram notification sent, but delivery timestamp "
+            "could not be saved for application %s",
+            application.pk,
+        )
+
+    return True
