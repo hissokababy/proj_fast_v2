@@ -1,132 +1,130 @@
 # Fast and Easy — Project Context
 
-**Version:** 1.0  
+**Version:** 2.0  
 **Project:** Fast and Easy  
 **Location:** Chirchiq, Tashkent Region, Uzbekistan  
 **Repository:** https://github.com/hissokababy/proj_fast_v2  
-**Working branch:** anzor  
-**Status:** Preliminary backend audit completed; implementation not yet modified.
+**Working branch:** `anzor`  
+**Last updated:** 2026-11-16
 
 ---
 
 # 1. Project Overview
 
-Fast and Easy is a bilingual website for an English language learning center located in Chirchiq, Tashkent Region, Uzbekistan.
+Fast and Easy — сайт языкового центра в Чирчике, Узбекистан.
 
-The website must:
-- Present the learning center and its educational programs.
-- Display teachers, certificates, student results, and interior photos.
-- Allow visitors to submit applications.
-- Send application notifications to Telegram.
-- Save all applications in the database.
-- Support Uzbek and Russian languages.
-- Provide an administrator-friendly content management system.
-- Be optimized for Google, Yandex, and ChatGPT Search discovery.
-
-The website should be maintainable and scalable.
+Основные задачи:
+- Представление языкового центра.
+- Информация о курсах и преподавателях.
+- Галерея сертификатов, мероприятий и интерьера.
+- Приём заявок от посетителей.
+- Отправка уведомлений о заявках в Telegram.
+- Поддержка узбекского и русского языков.
+- Управление контентом через Django Admin.
+- SEO и локальное продвижение.
 
 # 2. Technology Stack
 
 ## Backend
 - Python
-- Django
+- Django 6.1.2
 - Django REST Framework
 - Django Jazzmin
-- PostgreSQL (production)
-- SQLite (local development, temporarily)
+- PostgreSQL 17
+- SQLite для локальной разработки при необходимости
 - drf-spectacular
 - django-storages
-- MinIO / S3-compatible storage
-- Telegram Bot API
+- MinIO (S3-compatible storage)
+- pyTelegramBotAPI
 
 ## Frontend
 - Next.js
 - TypeScript
 - Tailwind CSS
 
-## Additional services
+## Infrastructure
+- Docker
+- Docker Compose
+- PostgreSQL
+- MinIO
+
+## External services
 - Yandex Maps
+- Telegram Bot API
 - Google Analytics 4
 - Google Search Console
 - Yandex Metrica
-- Telegram notifications
 
 # 3. Languages
 
-The website supports:
-- Uzbek — default language.
-- Russian — additional language.
+Сайт поддерживает два языка:
 
-Recommended URL structure:
+- Узбекский (`uz`) — основной.
+- Русский (`ru`) — дополнительный.
 
-- `/uz/`
-- `/ru/`
+Перевод контента выполняется на backend с использованием отдельных полей:
+- `field_uz`
+- `field_ru`
 
-The root URL `/` should redirect to `/uz/`.
+API принимает параметр `?lang=uz` или `?lang=ru`.
 
-All editable content and SEO metadata must support both languages.
+Правила:
+- По умолчанию используется узбекский.
+- При неподдерживаемом языке используется узбекский.
+- Если перевод выбранного языка пустой, используется русский.
 
-The header must include a language switcher.
+Интерфейс сайта (меню, кнопки, системные сообщения и другие UI-элементы) переводится на frontend.
+
+Административная панель Django используется только на русском языке.
 
 # 4. Website Structure
 
-The homepage consists of the following sections:
+Основные секции сайта:
 
-1. Hero section.
-2. About the learning center.
-3. Courses and educational programs.
-4. Teachers.
-5. Certificates and student results.
-6. Achievements of the learning center.
-7. Application form.
-8. Interior gallery.
-9. Contacts and Yandex Map.
+1. Hero.
+2. О центре.
+3. Курсы.
+4. Преподаватели.
+5. Сертификаты.
+6. Мероприятия.
+7. Форма заявки.
+8. Интерьер.
+9. Контакты.
+10. Яндекс Карта.
 
-The following sections are explicitly excluded:
+Исключены:
 - FAQ.
-- Reviews/testimonials.
-- Blog.
+- Отзывы.
+- Блог.
+- Achievement как отдельная модель.
 
 ## Courses
 
-Initial courses:
+Администратор управляет курсами.
 
-- General English
-- English for Kids
-- English for Adults
-- IELTS
-- Pre-IELTS
-- Speaking Club
+Начальные направления:
+- General English.
+- English for Kids.
+- English for Adults.
+- IELTS.
+- Pre-IELTS.
+- Speaking Club.
 
-Administrators must be able to add new courses.
+Возможности:
+- Создание и редактирование курсов.
+- Два языка.
+- Изображение.
+- Порядок отображения.
+- Активация и деактивация.
+- Выбор курсов для главной страницы.
 
-Courses are displayed as cards on the homepage.
+Цены публично не отображаются.
 
-There must be no separate page for each course.
+# 5. Database Models
 
-Administrators choose which courses are displayed.
-
-Course prices must not be displayed publicly. Prices are communicated after an application.
-
-## Achievements
-
-The administrator must be able to edit achievement values and descriptions.
-
-Examples:
-- Number of students.
-- Number of teachers.
-- Years of experience.
-- Other measurable achievements.
-
-# 5. Backend Database Models
-
-Existing models must be reviewed before changing or deleting anything.
-
-The target data model includes:
+Реализованные модели приложения `website`:
 
 ## Teacher
-
-Suggested fields:
 - name_uz
 - name_ru
 - description_uz
@@ -136,8 +134,15 @@ Suggested fields:
 - is_active
 
 ## Certificate
+- title_uz
+- title_ru
+- description_uz
+- description_ru
+- image
+- order
+- is_active
 
-Suggested fields:
+## Event
 - title_uz
 - title_ru
 - description_uz
@@ -147,8 +152,6 @@ Suggested fields:
 - is_active
 
 ## InteriorPhoto
-
-Suggested fields:
 - title_uz
 - title_ru
 - image
@@ -156,8 +159,6 @@ Suggested fields:
 - is_active
 
 ## Course
-
-Suggested fields:
 - title_uz
 - title_ru
 - description_uz
@@ -167,22 +168,37 @@ Suggested fields:
 - is_active
 - show_on_home
 
-## Achievement
+## Application
+- full_name
+- phone
+- status
+- utm_source
+- utm_medium
+- utm_campaign
+- utm_term
+- utm_content
+- landing_page
+- referrer
+- language
+- telegram_notified_at
+- created_at
+- updated_at
 
-Suggested fields:
-- title_uz
-- title_ru
-- value
-- suffix_uz
-- suffix_ru
-- order
-- is_active
+Статусы:
+- new
+- in_progress
+- completed
+- rejected
 
-The value should support text such as `10+`, `500+`, and similar formats.
+## OtherPhoto
+- title
+- key
+- image
+
+Используется для дополнительных изображений, доступных по уникальному ключу.
 
 ## SiteSettings
 
-Suggested fields:
 - site_name
 - logo
 - favicon
@@ -192,15 +208,17 @@ Suggested fields:
 - address_ru
 - latitude
 - longitude
-- working_hours
-- social_links
-- Yandex Maps settings
-
-This model should ideally have one configuration record.
+- working_hours_uz
+- working_hours_ru
+- instagram_url
+- telegram_url
+- facebook_url
+- youtube_url
+- yandex_maps_api_key
+- yandex_maps_map_id
 
 ## SEOSettings
 
-Suggested fields:
 - meta_title_uz
 - meta_title_ru
 - meta_description_uz
@@ -208,357 +226,308 @@ Suggested fields:
 - h1_uz
 - h1_ru
 
-SEO settings should be editable through Django Admin.
+SiteSettings и SEOSettings — singleton-модели. Создание дополнительных записей ограничено через Django Admin.
 
-## Application
+Achievement не используется и не планируется.
 
-Suggested fields:
-- full_name
-- phone
-- status
-- utm_source
-- utm_medium
-- utm_campaign
-- utm_content
-- utm_term
-- landing_page
-- referrer
-- language
-- telegram_notified_at
-- created_at
-- updated_at
+# 6. Application Workflow
 
-Possible statuses:
-- new
-- in_progress
-- contacted
-- completed
-- cancelled
+Форма заявки содержит:
+- Имя.
+- Телефон.
 
-## Event
+Дополнительные данные:
+- UTM-параметры.
+- Страница отправки.
+- Referrer.
+- Язык сайта.
 
-The existing Event model may be retained if it has a real purpose.
+Последовательность:
 
-It must not be removed without checking its usage.
+1. Frontend отправляет заявку.
+2. Backend валидирует данные.
+3. Заявка сохраняется в базе данных.
+4. Backend отправляет уведомление в Telegram-группу.
+5. При успешной отправке записывается `telegram_notified_at`.
 
-## OtherPhoto
+**Важные правила:**
 
-The existing OtherPhoto model must be reviewed before deciding whether to retain or replace it.
+- Сохранение заявки не зависит от доступности Telegram.
+- Если Telegram недоступен, заявка остаётся в базе.
+- Повторных отправок нет.
+- Celery, Redis, Beat и фоновые retry-механизмы не используются.
+- Не создавать отдельный механизм повторной отправки.
+- Telegram-уведомление отправляется один раз при создании заявки.
 
-# 6. Application Form
+## Anti-spam
 
-The public application form contains only:
+Используются:
+- DRF ScopedRateThrottle.
+- Ограничение 5 заявок в час.
+- Honeypot-поле `website`.
+- Валидация имени и телефона.
 
-- Name.
-- Phone number.
+# 7. API
 
-When a visitor submits the form:
+Все публичные endpoints доступны без авторизации.
 
-1. Validate the submitted data.
-2. Save the application to the database.
-3. Trigger a Telegram notification.
-4. Record notification status.
-5. Allow failed Telegram notifications to be retried.
+## Content API
 
-Important:
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/api/teachers/` | Преподаватели |
+| GET | `/api/certificates/` | Сертификаты |
+| GET | `/api/events/` | Мероприятия |
+| GET | `/api/interiors/` | Интерьер |
+| GET | `/api/courses/` | Все активные курсы |
+| GET | `/api/courses/?home=true` | Курсы для главной |
+| GET | `/api/site-settings/` | Настройки сайта |
+| GET | `/api/seo/` | SEO |
+| GET | `/api/other-photos/{key}/` | Дополнительное фото |
+| POST | `/api/applications/create/` | Создание заявки |
 
-**An application must remain saved even if Telegram is unavailable.**
+## API Documentation
 
-The following attribution fields must be collected when available:
+- Swagger: `/api/docs/`
+- ReDoc: `/api/redoc/`
+- OpenAPI schema: `/api/schema/`
 
-- utm_source
-- utm_medium
-- utm_campaign
-- utm_content
-- utm_term
-- landing_page
-- referrer
+Публичные endpoints контента доступны только для чтения.
 
-The application API must include anti-spam protection and request throttling.
-
-# 7. API Structure
-
-Existing endpoints:
-
-- GET `/api/teachers/`
-- GET `/api/certificates/`
-- GET `/api/events/`
-- GET `/api/interiors/`
-- POST `/api/applications/create/`
-- GET `/api/other-photos/<slug:key>/`
-
-Planned endpoints:
-
-- GET `/api/courses/`
-- GET `/api/achievements/`
-- GET `/api/settings/`
-
-SEO settings may be included in the settings endpoint.
-
-Public content endpoints must be read-only.
-
-Content management must happen through Django Admin.
+Создание заявки — единственный публичный endpoint записи.
 
 # 8. Django Admin
 
-Django Jazzmin is used as the administration interface.
+Используется Django Jazzmin.
 
-Administrators should be able to manage:
+Админка только на русском языке.
 
-- Teachers.
-- Certificates.
-- Courses.
-- Achievements.
-- Interior photos.
-- Site settings.
-- SEO settings.
-- Applications.
+Управление:
+- Преподавателями.
+- Сертификатами.
+- Мероприятиями.
+- Интерьером.
+- Курсами.
+- Заявками.
+- Дополнительными фотографиями.
+- Настройками сайта.
+- SEO.
 
-Application management should include:
+Для контента доступны сортировка и активация.
 
-- Status changes.
-- Search by name and phone.
-- Filtering by date and status.
-- Application creation date.
-- Telegram notification status.
+Для заявок:
+- Поиск по имени и телефону.
+- Фильтрация по статусу.
+- Фильтрация по языку.
+- Фильтрация по дате.
+- Отображение даты уведомления Telegram.
 
-The admin interface should be practical and easy to use.
+SiteSettings и SEOSettings ограничены одной записью через Django Admin.
 
-# 9. SEO and Search Visibility
+# 9. Docker Infrastructure
 
-The website should be optimized for:
+Docker Compose используется для запуска:
 
-- Google Search.
-- Yandex Search.
-- ChatGPT Search.
+- Django.
+- PostgreSQL.
+- MinIO.
 
-SEO requirements:
+Основные файлы:
 
-- Unique title and description for each language.
-- Correct H1 structure.
-- Canonical URLs.
-- hreflang for Uzbek and Russian.
-- Open Graph metadata.
-- Sitemap.xml.
-- robots.txt.
-- Schema.org structured data.
-- EducationalOrganization or an appropriate LocalBusiness schema.
-- Descriptive image alt attributes.
-- Server-side rendering or static generation with Next.js.
-- Fast page loading.
-- Responsive design.
-- HTTPS.
-- WebP/AVIF image optimization.
+```text
+backend/
+├── Dockerfile
+├── docker-compose.yml
+├── .env.example
+└── config/
+    └── settings.py
+```
 
-## Local SEO
+Конфиденциальные значения хранятся в `backend/.env`.
 
-The physical learning center is located in Chirchiq.
+`.env`, база SQLite, виртуальное окружение и Python cache не должны попадать в Git.
 
-The website should target:
-- Chirchiq.
-- Tashkent Region.
-- Uzbekistan.
+`.env.example` хранится в репозитории без реальных секретов.
 
-Do not create fake physical locations or misleading city-specific branches.
+## PostgreSQL
 
-Maintain consistent business information across Google Business Profile and Yandex Business.
+Используется PostgreSQL 17.
 
-## ChatGPT Search
+В Docker Django подключается к базе через имя сервиса `db`.
 
-The website should allow OAI-SearchBot to crawl public pages.
+## MinIO
 
-Example robots.txt configuration:
+Используется S3-совместимое хранилище для изображений и файлов.
 
-    User-agent: OAI-SearchBot
-    Allow: /
+Необходимо отдельно проверить:
+- Внутренний адрес MinIO для Django.
+- Публичный адрес для браузера.
+- Формирование URL файлов.
+- Доступность файлов с frontend.
+- Настройки bucket и доступа.
 
-    User-agent: GPTBot
-    Disallow: /
+Внутренний Docker hostname `minio` не должен использоваться браузером напрямую.
 
-    User-agent: *
-    Allow: /
+# 10. Security
 
-    Sitemap: https://YOUR-DOMAIN/sitemap.xml
+Основные требования:
 
-Search inclusion and ranking cannot be guaranteed.
+- `SECRET_KEY` только через environment variables.
+- `DEBUG=False` в production.
+- Корректный `ALLOWED_HOSTS`.
+- CORS только для разрешённых origins.
+- HTTPS в production.
+- Секреты не хранятся в Git.
+- Telegram token не публикуется.
+- MinIO credentials не публикуются.
+- API key Яндекс Карт не выдаётся публичным API.
+- Валидация загружаемых файлов.
+- Защита от спама.
+- Ограничение запросов.
 
-# 10. Security Requirements
-
-The preliminary audit identified the following issues:
-
-- A `.env` file is committed to a public repository.
-- Django SECRET_KEY is hardcoded in settings.
-- DEBUG is enabled.
-- ALLOWED_HOSTS is empty.
-- Application endpoint permits anonymous requests without identified throttling.
-- Upload validation needs review.
-- CORS configuration needs review.
-- Tests are currently insufficient.
-
-Required actions:
-
-1. Rotate all exposed Cloudinary credentials.
-2. Revoke and regenerate the Telegram bot token.
-3. Rotate MinIO credentials.
-4. Replace the Django SECRET_KEY.
-5. Remove `.env` from Git tracking.
-6. Add `.env` to `.gitignore`.
-7. Remove SQLite database files and Python cache files from Git tracking where appropriate.
-8. Review Git history for exposed credentials.
-9. Configure production DEBUG=False.
-10. Configure ALLOWED_HOSTS.
-11. Review CORS, CSRF, HTTPS, cookies, and security headers.
-12. Add upload type and size validation.
-13. Add API throttling and application anti-spam protection.
-
-Never store actual credentials or secret values in this document.
+Дополнительно требуется проверить:
+- Production deployment.
+- Gunicorn или другой production WSGI server.
+- CSRF и security headers.
+- Проверку типов и размеров загружаемых файлов.
+- Публичную доступность MinIO.
+- Ротацию секретов при необходимости.
 
 # 11. Current Backend Structure
 
-Preliminary structure:
+```text
+backend/
+├── config/
+│   ├── settings.py
+│   ├── urls.py
+│   ├── asgi.py
+│   └── wsgi.py
+├── website/
+│   ├── migrations/
+│   ├── services/
+│   ├── views/
+│   ├── admin.py
+│   ├── models.py
+│   ├── serializers.py
+│   ├── urls.py
+│   └── tests.py
+├── tg_bot/
+│   ├── handlers/
+│   ├── management/
+│   │   └── commands/
+│   │       └── runbot.py
+│   ├── services/
+│   │   └── telegram.py
+│   ├── bot.py
+│   ├── admin.py
+│   ├── models.py
+│   └── tests.py
+├── Dockerfile
+├── docker-compose.yml
+├── .env.example
+├── manage.py
+└── requirements.txt
+```
 
-    backend/
-      config/
-        settings.py
-        urls.py
-        asgi.py
-        wsgi.py
-      website/
-        migrations/
-        services/
-        views/
-        admin.py
-        models.py
-        serializers.py
-        urls.py
-        tests.py
-      manage.py
-      requirements.txt
-      docker-compose.yml
-      .env
-      db.sqlite3
+# 12. Telegram Bot
 
-This structure must be verified against the current repository before implementation.
+Используется библиотека pyTelegramBotAPI.
 
-# 12. Preliminary Audit Findings
+Структура:
+- `bot.py` — создание бота.
+- `handlers/start.py` — обработчики `/start` и `/help`.
+- `management/commands/runbot.py` — запуск polling.
+- `services/telegram.py` — отправка уведомлений о заявках.
 
-The following issues were identified:
+Бот запускается отдельной management-командой.
 
-- Incorrect type hints in certificate and event services.
-- Empty placeholder test file.
-- Possible malformed dependency entry in requirements.txt.
-- OtherPhoto uses FileField although it appears to store images.
-- Telegram notification workflow has not been identified.
-- Application model lacks the planned UTM and status fields.
-- Additional security configuration is required.
+Telegram-уведомления о заявках отправляются непосредственно из API после сохранения заявки.
 
-These findings are preliminary and must be verified against current files.
+Повторная отправка уведомлений не реализуется.
 
 # 13. Development Rules
 
-1. Continue working in the existing repository.
-2. Do not create a new repository.
-3. Use the `anzor` branch unless explicitly instructed otherwise.
-4. Do not delete existing models or data without reviewing dependencies.
-5. Use Django migrations for database changes.
-6. Avoid destructive migrations.
-7. Keep backend API contracts consistent with frontend requirements.
-8. Add tests for new functionality.
-9. Keep secrets out of Git.
-10. Update this document after every significant development stage.
+1. Работать в существующем репозитории.
+2. Рабочая ветка — `anzor`.
+3. Не менять архитектуру без согласования.
+4. Не удалять модели и данные без проверки.
+5. Миграции сначала анализировать, затем создавать и применять.
+6. Не добавлять ненужные зависимости.
+7. Не внедрять Celery и Redis для заявок.
+8. Не добавлять Achievement.
+9. Документацию обновлять после значимых изменений.
+10. Работать небольшими этапами — 1–2 задачи за раз.
+11. Сообщать, когда логический этап готов к коммиту.
 
 # 14. Current Development Status
 
-Completed:
-- Initial requirements gathering.
-- Initial architecture selection.
-- Preliminary backend structure review.
-- Preliminary security review.
-- Initial target database model planning.
-- Initial API planning.
+## Implemented
 
-Not completed:
-- Full migration audit.
-- Full dependency audit.
-- Database schema review.
-- Telegram notification implementation review.
-- Security remediation.
-- Database model updates.
-- API updates.
-- Automated tests.
-- Frontend implementation.
-- Production deployment.
+- Основные Django-модели.
+- Django Admin.
+- Singleton-защита настроек.
+- Мультиязычные сериализаторы.
+- Публичные API endpoints.
+- Фильтрация активного контента.
+- API документация.
+- Создание заявок.
+- Сохранение UTM-данных.
+- Anti-spam и throttling.
+- Telegram notification service.
+- Telegram bot на pyTelegramBotAPI.
+- Docker Compose для Django, PostgreSQL и MinIO.
+- Переменные окружения.
 
-No code or database changes have been made as part of the preliminary audit.
+## Verified
 
-GitHub integration previously returned HTTP 403 when attempting to create a file. Therefore, this document must currently be added manually.
+- Миграции `website` с 0001 по 0008 применены.
+- `makemigrations --check --dry-run` не выявил новых миграций.
+- `migrate --check` не выявил неприменённых миграций.
+- Основные публичные views и services проверены по коду.
+- API serializers и маршруты проверены.
+- Telegram workflow проверен по коду.
+
+## Remaining Backend Work
+
+1. Проверить публичную доступность файлов MinIO.
+2. Разделить внутренний и публичный адрес MinIO.
+3. Проверить production-настройки Django.
+4. Проверить API локально через HTTP.
+5. Проверить валидацию заявок и поведение Telegram.
+6. Проверить загрузку изображений.
+7. Провести итоговый аудит безопасности.
+8. Обновить и запустить автоматические тесты.
+
+Автоматические тесты пока не являются приоритетом — сначала завершается аудит и исправление основной логики.
+
+## Frontend
+
+Frontend Next.js должен быть реализован отдельно после завершения backend.
 
 # 15. Next Development Steps
 
-## Stage 1 — Repository Audit
-
-Obtain and review:
-
-- Complete repository tree.
-- requirements.txt
-- docker-compose.yml
-- settings.py
-- models.py
-- admin.py
-- serializers.py
-- urls.py
-- views
-- services
-- migrations
-
-Also check `.gitignore` and Git tracking of sensitive files without printing secret values.
-
-## Stage 2 — Database Design
-
-Compare the current schema with the target models.
-
-Prepare safe Django migrations.
-
-Do not delete existing data.
-
-## Stage 3 — Backend Implementation
-
-Implement:
-
-- Multilingual content models.
-- Course API.
-- Achievement API.
-- Site settings API.
-- Application status and attribution.
-- Telegram notification workflow.
-- Notification retry mechanism.
-- Admin improvements.
-
-## Stage 4 — Tests and Security
-
-Implement tests and resolve security findings.
-
-## Stage 5 — Frontend
-
-Build the bilingual Next.js website.
-
-## Stage 6 — SEO and Analytics
-
-Implement SEO, analytics, indexing, and structured data.
-
-## Stage 7 — Deployment
-
-Prepare production infrastructure and deployment.
+1. Обновить `PROJECT_STATUS.md`.
+2. Завершить настройку MinIO.
+3. Проверить production settings.
+4. Провести локальную проверку API.
+5. Исправить обнаруженные проблемы.
+6. Перейти к автоматическим тестам.
+7. Начать frontend.
+8. Настроить SEO и аналитику.
+9. Подготовить production deployment.
 
 ---
 
 # 16. Change History
 
-## Version 1.0
+## Version 2.0 — 2026-11-16
 
-- Created initial project context.
-- Documented approved website requirements.
-- Documented target architecture.
-- Recorded preliminary backend audit findings.
-- Recorded security risks.
-- Defined implementation stages.
+- Обновлена архитектура проекта.
+- Документ приведён в соответствие с текущими Django-моделями.
+- Обновлена структура API.
+- Зафиксирована текущая реализация Telegram.
+- Удалены устаревшие требования к Achievement.
+- Удалены требования к повторной отправке Telegram.
+- Обновлена Docker-инфраструктура.
+- Зафиксировано текущее состояние миграций.
+- Добавлены актуальные задачи backend-разработки.
